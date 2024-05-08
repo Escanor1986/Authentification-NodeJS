@@ -4,7 +4,10 @@ const { app } = require("../app");
 const User = require("../database/models/user.model");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const { findUserPerEmail } = require("../queries/user.queries");
+const {
+  findUserPerEmail,
+  findUserPerGoogleId,
+} = require("../queries/user.queries");
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,9 +57,26 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/cb",
     },
-    (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-      done(null, false);
+    async (accessToken, refreshToken, profile, done) => {
+      // console.log(util.inspect(profile, { compact: true, depth: 5, breakLength: 80 }));
+      try {
+        const user = await findUserPerGoogleId(profile.id);
+        if (user) {
+          done(null, user);
+        } else {
+          const newUser = new User({
+            username: profile.displayName,
+            local: {
+              googleId: profile.id,
+              email: profile.emails[0].value,
+            },
+          });
+          const savedUser = await newUser.save();
+          done(null, savedUser);
+        }
+      } catch (e) {
+        done(e);
+      }
     }
   )
 );
