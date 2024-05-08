@@ -12,7 +12,7 @@ const userSchema = schema({
 
 userSchema.statics.hashPassword = async password => {
   try {
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12); // Maximum 30
     return bcrypt.hash(password, salt);
   } catch (e) {
     throw e;
@@ -20,7 +20,9 @@ userSchema.statics.hashPassword = async password => {
 };
 
 userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.local.password);
+  return bcrypt.compare(password, this.local.password); // Return true or false (if match or not)
 };
 
 const User = mongoose.model("user", userSchema);
+
+module.exports = User;

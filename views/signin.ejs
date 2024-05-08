@@ -7,10 +7,21 @@
   <body>
     <div class="container-fluid">
       <div class="d-flex flex-column align-items-center justify-content-center w-100" style="height:100vh;">
-        <h1>Authentification</h1>
+        <h1>Connexion</h1>
         <div class="d-flex flex-row">
-            <a href="/users/new" class="btn btn-primary mx-3">Inscription</a>
-            <a href="/auth/signin/form" class="btn btn-secondary mx-3">Connexion</a>
+          <form method="post" action="/auth/signin" >
+            <div class="mb-3">
+              <label>email : </label>
+              <input class="form-control" type="email" name="email" />
+            </div>
+            <div class="mb-3">
+              <label>Password : </label>
+              <input class="form-control" type="password" name="password" />
+            </div>
+            <div>
+              <button class="btn btn-primary">Connexion</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
