@@ -1,7 +1,9 @@
 const passport = require("passport");
+require("dotenv").config();
 const { app } = require("../app");
 const User = require("../database/models/user.model");
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { findUserPerEmail } = require("../queries/user.queries");
 
 app.use(passport.initialize());
@@ -40,6 +42,21 @@ passport.use(
       } catch (e) {
         done(e);
       }
+    }
+  )
+);
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/cb",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      done(null, false);
     }
   )
 );

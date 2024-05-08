@@ -30,3 +30,16 @@ exports.sessionDelete = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+exports.googleAuth = (req, res, next) => {
+  passport.authenticate("google", {
+    scope: ["email", "profile"],
+  })(req, res, next);
+};
+
+exports.googleAuthCb = (req, res, next) => {
+  passport.authenticate("google", {
+    successRedirect: "/protected",
+    failureRedirect: "/",
+  })(req, res, next);
+};
