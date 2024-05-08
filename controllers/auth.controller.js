@@ -3,9 +3,28 @@ exports.sessionNew = (req, res, next) => {
 };
 
 exports.sessionCreate = (req, res, next) => {
-  res.end();
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      next(err);
+    } else if (!user) {
+      res.render("signin", { error: info.message });
+    } else {
+      req.login(user, err => {
+        if (err) {
+          next(err);
+        } else {
+          res.redirect("/");
+        }
+      });
+    }
+  })(req, res, next);
 };
 
 exports.sessionDelete = (req, res, next) => {
-  res.end();
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 };
