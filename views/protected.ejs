@@ -7,16 +7,7 @@
   <body>
     <div class="container-fluid">
       <div class="d-flex flex-column align-items-center justify-content-center w-100" style="height:100vh;">
-        <h1>Authentification</h1>
-        <div class="d-flex flex-row mt-5">
-          <% if (user) { %>
-            <a href="/auth/signout" class="btn btn-danger mx-3">Déconnexion</a>
-            <a href="/protected" class="btn btn-warning mx-3">Protected</a>
-            <% } else { %>
-            <a href="/users/new" class="btn btn-primary mx-3">Inscription</a>
-            <a href="/auth/signin/form" class="btn btn-secondary mx-3">Connexion</a>
-            <% } %>
-        </div>
+        <h1>Protected</h1>
       </div>
     </div>
   </body>

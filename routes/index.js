@@ -1,13 +1,17 @@
 const userRoutes = require("./user.routes");
 const authRoutes = require("./auth.routes");
 const router = require("express").Router();
+const { ensureAuthenticated } = require("../config/security.config");
 
 router.use("/users", userRoutes); // fixed issue !!! router.use INSTEAD OF router.get
 router.use("/auth", authRoutes);
 
-router.get("/", (req, res, next) => {
-  console.log(req.user);
-  res.render("index");
+router.get("/protected", ensureAuthenticated, (req, res) => {
+  res.render("protected");
+});
+
+router.get("/", (req, res) => {
+  res.render("index", { user: req.user });
 });
 
 module.exports = router;

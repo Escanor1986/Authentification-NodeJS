@@ -1,3 +1,5 @@
+const passport = require("passport");
+
 exports.sessionNew = (req, res, next) => {
   res.render("signin", { error: null });
 };
